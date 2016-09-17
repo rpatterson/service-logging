@@ -1,3 +1,9 @@
+"""
+Python logging configurations done The Right Way
+"""
+
+import os
+
 from setuptools import setup, find_packages
 
 version = '0.1'
@@ -8,7 +14,8 @@ setup(
     description=(
         'Python logging configurations done The Right Way '
         'for programs that may run in the foreground or background'),
-    long_description='',
+    long_description=open(
+        os.path.join(os.path.dirname(__file__), 'README.rst')).read(),
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Console',
