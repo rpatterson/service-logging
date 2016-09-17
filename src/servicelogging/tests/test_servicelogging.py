@@ -1,17 +1,17 @@
 """
-python-project-structure unit and integration tests.
+service-logging unit and integration tests.
 """
 
 import contextlib
 import io
 import unittest
 
-import pythonprojectstructure
+import servicelogging
 
 
-class PythonProjectStructureTests(unittest.TestCase):
+class ServiceLoggingTests(unittest.TestCase):
     """
-    python-project-structure unit and integration tests.
+    service-logging unit and integration tests.
     """
 
     def getCliErrorMessages(self, args):
@@ -21,7 +21,7 @@ class PythonProjectStructureTests(unittest.TestCase):
         stderr_file = io.StringIO()
         with self.assertRaises(SystemExit):
             with contextlib.redirect_stderr(stderr_file):
-                pythonprojectstructure.main(args=args)
+                servicelogging.main(args=args)
         return stderr_file.getvalue()
 
     def test_cli_help(self):
@@ -31,10 +31,10 @@ class PythonProjectStructureTests(unittest.TestCase):
         stdout_file = io.StringIO()
         with self.assertRaises(SystemExit):
             with contextlib.redirect_stdout(stdout_file):
-                pythonprojectstructure.main(args=["--help"])
+                servicelogging.main(args=["--help"])
         stdout = stdout_file.getvalue()
         self.assertIn(
-            pythonprojectstructure.__doc__.strip(),
+            servicelogging.__doc__.strip(),
             stdout,
             "The console script name missing from --help output",
         )
@@ -43,7 +43,7 @@ class PythonProjectStructureTests(unittest.TestCase):
         """
         The command line script accepts options controlling behavior.
         """
-        result = pythonprojectstructure.main(args=[])
+        result = servicelogging.main(args=[])
         self.assertIsNone(
             result, "Wrong console script options return value",
         )

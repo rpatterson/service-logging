@@ -1,5 +1,5 @@
 """
-Python project structure foundation or template, distribution/package metadata.
+Python logging configurations done The Right Way, distribution/package metadata.
 """
 
 import setuptools
@@ -8,13 +8,13 @@ with open("README.rst", "r") as readme:
     LONG_DESCRIPTION = readme.read()
 
 setuptools.setup(
-    name="python-project-structure",
+    name="service-logging",
     author="Ross Patterson",
     author_email="me@rpatterson.net",
-    description="Python project structure foundation or template",
+    description="python logging configurations done The Right Way",
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/x-rst",
-    url="https://github.com/rpatterson/python-project-structure",
+    url="https://github.com/rpatterson/service-logging",
     packages=setuptools.find_packages("src"),
     package_dir={"": "src"},
     classifiers=[
@@ -24,7 +24,7 @@ setuptools.setup(
     ],
     python_requires=">=3.6",
     use_scm_version=dict(
-        write_to="src/pythonprojectstructure/version.py",
+        write_to="src/servicelogging/version.py",
         local_scheme="no-local-version",
     ),
     setup_requires=["setuptools_scm"],
@@ -40,6 +40,6 @@ setuptools.setup(
         ]
     ),
     entry_points=dict(
-        console_scripts=["python-project-structure=pythonprojectstructure:main"]
+        console_scripts=["service-logging=servicelogging:main"]
     ),
 )

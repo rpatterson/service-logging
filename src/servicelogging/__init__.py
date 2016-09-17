@@ -1,5 +1,5 @@
 """
-Python project structure foundation or template, top-level package.
+python logging configurations done The Right Way, top-level package.
 """
 
 import argparse
