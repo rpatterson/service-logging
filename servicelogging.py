@@ -52,7 +52,11 @@ def choose_handler(**kwargs):
     """
     if sys.stderr.isatty():
         return logging.StreamHandler()
-    elif win32evtlog is not None:
+    elif sys.platform == 'win32':
+        if win32evtlog is None:
+            raise ValueError(
+                'The Python Win32 extensions are not available.  '
+                'Please install the `pywin32` distribution.')
         kwargs.setdefault('appname', APPNAME)
         return handlers.NTEventLogHandler(**kwargs)
     else:
