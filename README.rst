@@ -6,8 +6,7 @@ Python logging configurations done The Right Way
 
 .. image:: https://github.com/rpatterson/service-logging/workflows/Run%20linter,%20tests%20and,%20and%20release/badge.svg
 
-Python logging configurations done The Right Way for programs that may run in the
-foreground or background.
+Useful for programs that may run in the foreground or background.
 
 
 Installation
