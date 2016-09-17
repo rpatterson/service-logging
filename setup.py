@@ -11,7 +11,9 @@ setuptools.setup(
     name="service-logging",
     author="Ross Patterson",
     author_email="me@rpatterson.net",
-    description="python logging configurations done The Right Way",
+    description=(
+        'Python logging configurations done The Right Way '
+        'for programs that may run in the foreground or background'),
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/x-rst",
     url="https://github.com/rpatterson/service-logging",
@@ -22,6 +24,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
+    keywords='logging syslog nteventlog console',
     python_requires=">=3.6",
     use_scm_version=dict(
         write_to="src/servicelogging/version.py",
