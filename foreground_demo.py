@@ -2,9 +2,11 @@
 Demo or testing script that just logs a message for each level.
 """
 
+import sys
+import os
 import logging
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(os.path.splitext(os.path.basename(sys.argv[0]))[0])
 
 for level in sorted(
         level for level in logging._levelNames
