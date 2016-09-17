@@ -38,8 +38,7 @@ setup(
     zip_safe=False,
     install_requires=[
         # -*- Extra requirements: -*-
+        'six',
       ],
-    entry_points="""
-      # -*- Entry points: -*-
-      """,
+    entry_points=dict(console_scripts=['servicelogging=servicelogging:main']),
 )
