@@ -25,6 +25,9 @@ parser.add_argument(
     'script', type=open,
     help='The Python script to run after configuring logging')
 
+SYSLOG_FMT = '%(name)s[%(process)d] %(levelname)s %(message)s'
+SYSLOG_FORMATTER = logging.Formatter(SYSLOG_FMT)
+
 
 # Import time OS-specific detection
 
@@ -51,18 +54,22 @@ def choose_handler(**kwargs):
     supplementing based on the current OS and context.
     """
     if sys.stderr.isatty():
-        return logging.StreamHandler()
+        handler = logging.StreamHandler()
     elif sys.platform == 'win32':
         if win32evtlog is None:
             raise ValueError(
                 'The Python Win32 extensions are not available.  '
                 'Please install the `pywin32` distribution.')
         kwargs.setdefault('appname', APPNAME)
-        return handlers.NTEventLogHandler(**kwargs)
+        handler = handlers.NTEventLogHandler(**kwargs)
+        handler.setFormatter(SYSLOG_FORMATTER)
     else:
         if SYSLOG_SOCKET:
             kwargs.setdefault('address', SYSLOG_SOCKET)
-        return handlers.SysLogHandler(**kwargs)
+        handler = handlers.SysLogHandler(**kwargs)
+        handler.setFormatter(SYSLOG_FORMATTER)
+
+    return handler
 
 
 def basicConfig(level=logging.INFO):
@@ -85,7 +92,8 @@ def main(args=None):
     import __main__
 
     args, remaining = parser.parse_known_args(args)
-    sys.argv[:] = remaining
+    sys.argv[0] = args.script.name
+    sys.argv[1:] = remaining
     # Replace our dir with script's dir in front of module search path.
     sys.path[0] = os.path.dirname(args.script.name)
 
