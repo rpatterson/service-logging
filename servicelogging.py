@@ -43,8 +43,6 @@ for socket_name in SYSLOG_SOCKETS:
         SYSLOG_SOCKET = socket_name
         break
 
-APPNAME = os.path.splitext(os.path.basename(sys.argv[0]))[0]
-
 
 def choose_handler(**kwargs):
     """
@@ -60,7 +58,8 @@ def choose_handler(**kwargs):
             raise ValueError(
                 'The Python Win32 extensions are not available.  '
                 'Please install the `pywin32` distribution.')
-        kwargs.setdefault('appname', APPNAME)
+        kwargs.setdefault(
+            'appname', os.path.splitext(os.path.basename(sys.argv[0]))[0])
         handler = handlers.NTEventLogHandler(**kwargs)
         handler.setFormatter(SYSLOG_FORMATTER)
     else:
