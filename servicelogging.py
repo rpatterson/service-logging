@@ -35,7 +35,7 @@ SYSLOG_SOCKETS = (
     '/var/run/syslog',  # OS X
     '/var/run/logpriv',  # BSD
     '/var/run/log',  # BSD
-    )
+)
 SYSLOG_SOCKET = None
 for socket_name in SYSLOG_SOCKETS:
     if os.path.exists(socket_name):
