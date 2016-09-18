@@ -70,4 +70,16 @@ you can use ``servicelogging.choose_handler()``::
   >>> handler = servicelogging.choose_handler()
 
 
+----------------------------
+TODO
+----------------------------
+Features for future releases
+____________________________
+
+Support alternate logging configuration options:
+
+  Make sure that the approach is compatible with the various Python
+  ``logging.config`` options.
+
+
 .. _pip: https://pip.pypa.io/en/stable/installing/
