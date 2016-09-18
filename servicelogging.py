@@ -25,8 +25,7 @@ parser.add_argument(
     'script', type=open,
     help='The Python script to run after configuring logging')
 
-SYSLOG_FMT = '%(name)s[%(process)d] %(levelname)s %(message)s'
-SYSLOG_FORMATTER = logging.Formatter(SYSLOG_FMT)
+MESSAGE_FMT = '%(name)s %(levelname)s %(message)s'
 
 
 # Import time OS-specific detection
@@ -51,22 +50,28 @@ def choose_handler(**kwargs):
     `kwargs` are passed onto the handler class instantiation after
     supplementing based on the current OS and context.
     """
+    appname = os.path.splitext(os.path.basename(sys.argv[0]))[0]
+    syslog_fmt = ('{0}[%(process)d]: ' + MESSAGE_FMT).format(appname)
+
     if sys.stderr.isatty():
         handler = logging.StreamHandler()
+        formatter = logging.Formatter(MESSAGE_FMT)
+        handler.setFormatter(formatter)
     elif sys.platform == 'win32':
         if win32evtlog is None:
             raise ValueError(
                 'The Python Win32 extensions are not available.  '
                 'Please install the `pywin32` distribution.')
-        kwargs.setdefault(
-            'appname', os.path.splitext(os.path.basename(sys.argv[0]))[0])
+        kwargs.setdefault('appname', appname)
         handler = handlers.NTEventLogHandler(**kwargs)
-        handler.setFormatter(SYSLOG_FORMATTER)
+        formatter = logging.Formatter(syslog_fmt)
+        handler.setFormatter(formatter)
     else:
         if SYSLOG_SOCKET:
             kwargs.setdefault('address', SYSLOG_SOCKET)
         handler = handlers.SysLogHandler(**kwargs)
-        handler.setFormatter(SYSLOG_FORMATTER)
+        formatter = logging.Formatter(syslog_fmt)
+        handler.setFormatter(formatter)
 
     return handler
 
