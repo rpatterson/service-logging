@@ -86,7 +86,7 @@ def basicConfig(level=logging.INFO):
     if not root.handlers:
         handler = choose_handler()
         root.addHandler(handler)
-    root.setLevel(level)
+        root.setLevel(level)
 
 
 def main(args=None):
