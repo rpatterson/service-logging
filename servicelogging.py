@@ -28,6 +28,24 @@ parser.add_argument(
 MESSAGE_FMT = '%(name)s %(levelname)s %(message)s'
 
 
+def setup_fmts():
+    """
+    Set the global format strings.
+
+    Need a function because cannot be set at import time if running as a
+    wrapper for another script.
+    """
+    global APPNAME
+    global SYSLOG_PREFIX
+    global SYSLOG_FMT
+
+    APPNAME = os.path.splitext(os.path.basename(sys.argv[0]))[0]
+    SYSLOG_PREFIX = '{0}[%(process)d]: '.format(APPNAME)
+    SYSLOG_FMT = SYSLOG_PREFIX + MESSAGE_FMT
+
+setup_fmts()
+
+
 # Import time OS-specific detection
 
 SYSLOG_SOCKETS = (
@@ -50,9 +68,6 @@ def choose_handler(**kwargs):
     `kwargs` are passed onto the handler class instantiation after
     supplementing based on the current OS and context.
     """
-    appname = os.path.splitext(os.path.basename(sys.argv[0]))[0]
-    syslog_fmt = ('{0}[%(process)d]: ' + MESSAGE_FMT).format(appname)
-
     if sys.stderr.isatty():
         handler = logging.StreamHandler(**kwargs)
         formatter = logging.Formatter(MESSAGE_FMT)
@@ -62,15 +77,15 @@ def choose_handler(**kwargs):
             raise ValueError(
                 'The Python Win32 extensions are not available.  '
                 'Please install the `pywin32` distribution.')
-        kwargs.setdefault('appname', appname)
+        kwargs.setdefault('appname', APPNAME)
         handler = handlers.NTEventLogHandler(**kwargs)
-        formatter = logging.Formatter(syslog_fmt)
+        formatter = logging.Formatter(SYSLOG_FMT)
         handler.setFormatter(formatter)
     else:
         if SYSLOG_SOCKET:
             kwargs.setdefault('address', SYSLOG_SOCKET)
         handler = handlers.SysLogHandler(**kwargs)
-        formatter = logging.Formatter(syslog_fmt)
+        formatter = logging.Formatter(SYSLOG_FMT)
         handler.setFormatter(formatter)
 
     return handler
@@ -100,6 +115,7 @@ def main(args=None):
     sys.argv[1:] = remaining
     # Replace our dir with script's dir in front of module search path.
     sys.path[0] = os.path.dirname(args.script.name)
+    setup_fmts()
 
     basicConfig(level=args.level)
 
