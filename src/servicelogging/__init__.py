@@ -62,7 +62,7 @@ def choose_handler(**kwargs):
     syslog_fmt = ('{0}[%(process)d]: ' + MESSAGE_FMT).format(appname)
 
     if sys.stderr.isatty():
-        handler = logging.StreamHandler()
+        handler = logging.StreamHandler(**kwargs)
         formatter = logging.Formatter(MESSAGE_FMT)
         handler.setFormatter(formatter)
     elif sys.platform == "win32":
