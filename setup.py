@@ -24,7 +24,7 @@ setup(
         'License :: OSI Approved :: GNU General Public License (GPL)',
         'Natural Language :: English',
         'Operating System :: OS Independent',
-        'Programming Language :: Python', '',
+        'Programming Language :: Python',
         'Topic :: System :: Logging',
         'Topic :: Utilities',
     ],
