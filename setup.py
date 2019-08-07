@@ -33,7 +33,7 @@ setup(
     author_email='me@rpatterson.net',
     url='https://pypi.python.org/pypi/service-logging',
     license='GPL',
-    packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
+    py_modules=['servicelogging'],
     include_package_data=True,
     zip_safe=False,
     install_requires=[
