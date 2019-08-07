@@ -13,4 +13,4 @@ popen = subprocess.Popen(
      os.path.join(dirname, 'servicelogging.py'),
      os.path.join(dirname, 'foreground_demo.py')],
     stderr=subprocess.PIPE)
-print popen.communicate()[1]
+print(popen.communicate()[1])
