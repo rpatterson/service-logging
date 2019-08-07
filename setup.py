@@ -38,6 +38,7 @@ setuptools.setup(
         local_scheme="no-local-version",
     ),
     setup_requires=["setuptools_scm"],
+    install_requires=["six"],
     extras_require=dict(
         dev=[
             "pytest",
