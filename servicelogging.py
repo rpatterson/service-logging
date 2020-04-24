@@ -26,6 +26,7 @@ parser.add_argument(
     help='The Python script to run after configuring logging')
 
 MESSAGE_FMT = '%(name)s %(levelname)s %(message)s'
+message_formatter = logging.Formatter(MESSAGE_FMT)
 
 
 def setup_fmts():
@@ -38,10 +39,13 @@ def setup_fmts():
     global APPNAME
     global SYSLOG_PREFIX
     global SYSLOG_FMT
+    global syslog_formatter
 
     APPNAME = os.path.splitext(os.path.basename(sys.argv[0]))[0]
     SYSLOG_PREFIX = '{0}[%(process)d]: '.format(APPNAME)
     SYSLOG_FMT = SYSLOG_PREFIX + MESSAGE_FMT
+    syslog_formatter = logging.Formatter(SYSLOG_FMT)
+
 
 setup_fmts()
 
@@ -70,8 +74,7 @@ def choose_handler(**kwargs):
     """
     if sys.stderr.isatty():
         handler = logging.StreamHandler(**kwargs)
-        formatter = logging.Formatter(MESSAGE_FMT)
-        handler.setFormatter(formatter)
+        handler.setFormatter(message_formatter)
     elif sys.platform == 'win32':
         if win32evtlog is None:
             raise ValueError(
@@ -79,14 +82,12 @@ def choose_handler(**kwargs):
                 'Please install the `pywin32` distribution.')
         kwargs.setdefault('appname', APPNAME)
         handler = handlers.NTEventLogHandler(**kwargs)
-        formatter = logging.Formatter(SYSLOG_FMT)
-        handler.setFormatter(formatter)
+        handler.setFormatter(syslog_formatter)
     else:
         if SYSLOG_SOCKET:
             kwargs.setdefault('address', SYSLOG_SOCKET)
         handler = handlers.SysLogHandler(**kwargs)
-        formatter = logging.Formatter(SYSLOG_FMT)
-        handler.setFormatter(formatter)
+        handler.setFormatter(syslog_formatter)
 
     return handler
 
