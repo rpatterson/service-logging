@@ -77,6 +77,30 @@ class SysLogHandler(handlers.SysLogHandler):
     })
 
 
+def name_all_levels(names_by_level=logging._levelToName):
+    """
+    Add meaningful names for all possible logging levels that don't have them:
+
+    CRITICAL
+    ERROR 49
+    ERROR 48
+    ...
+    ERROR 41
+    ERROR
+    WARNING 39
+    ...
+
+    Useful to avoid ambiguous `Level ##` output in logging messages.
+    """
+    level_nums = sorted(names_by_level.keys(), reverse=True)
+    for level_idx, level_num in level_nums[:-1]:
+        for intermediate_level in range(
+                level_nums[level_idx + 1] + 1, level_num):
+            logging.addLevelName(
+                intermediate_level,
+                f"{names_by_level[level_num]} {intermediate_level:02d}")
+
+
 def choose_handler(**kwargs):
     """
     Choose the best handler for the current OS and context.
@@ -111,6 +135,9 @@ def basicConfig(level=logging.INFO):
     Also choose the appropriate LEVEL.
     """
     root = logging.getLogger()
+
+    name_all_levels()
+
     if not root.handlers:
         handler = choose_handler()
         root.addHandler(handler)
