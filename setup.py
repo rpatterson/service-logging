@@ -53,7 +53,8 @@ setuptools.setup(
             "autoflake",
             "autopep8",
             'flake8-black;python_version>="3"',
-        ]
+        ],
+        loguru=['loguru;python_version>="3"'],
     ),
     entry_points=dict(console_scripts=["service-logging=servicelogging:main"]),
 )

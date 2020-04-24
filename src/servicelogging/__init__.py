@@ -23,6 +23,11 @@ try:
 except ImportError:
     win32evtlog = None
 
+try:
+    import loguru
+except ImportError:  # pragma: no cover
+    loguru = None
+
 
 def logging_level_type(level_name):
     """
@@ -155,11 +160,28 @@ def basicConfig(level=logging.INFO):
 
     Also choose the appropriate LEVEL.
     """
+    if loguru is not None:  # pragma: no cover
+        add_loguru_level_names()
+
     root = logging.getLogger()
     if not root.handlers:  # pragma: no cover
         handler = choose_handler()
         root.addHandler(handler)
         root.setLevel(level)
+
+
+if loguru is not None:  # pragma: no cover
+
+    def add_loguru_level_names(
+        loguru_levels=loguru.logger._core.levels, levels_by_name=logging._nameToLevel
+    ):
+        """
+        Add custom loguru level names to prevent ambiguous `Level ##` in messages.
+        """
+        for loguru_level_name, loguru_level in loguru_levels.items():
+            for level_name in (loguru_level_name, loguru_level.name):
+                if level_name not in levels_by_name:
+                    logging.addLevelName(loguru_level.no, level_name)
 
 
 def main(args=None):
