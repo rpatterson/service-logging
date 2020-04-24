@@ -109,6 +109,18 @@ for socket_name in SYSLOG_SOCKETS:  # pragma: no cover
         break
 
 
+class SysLogHandler(handlers.SysLogHandler):
+    """
+    Also map common custom logging levels, such as VERBOSE.
+    """
+
+    priority_map = dict(handlers.SysLogHandler.priority_map, **{
+        "TRACE": "debug",
+        "VERBOSE": "debug",
+        "SUCCESS": "notice",
+    })
+
+
 def choose_handler(**kwargs):  # pragma: no cover
     """
     Choose the best handler for the current OS and context.
@@ -131,7 +143,7 @@ def choose_handler(**kwargs):  # pragma: no cover
     else:
         if SYSLOG_SOCKET:
             kwargs.setdefault("address", SYSLOG_SOCKET)
-        handler = handlers.SysLogHandler(**kwargs)
+        handler = SysLogHandler(**kwargs)
         handler.setFormatter(syslog_formatter)
 
     return handler
