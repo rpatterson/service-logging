@@ -121,8 +121,8 @@ def main(args=None):
     args, remaining = parser.parse_known_args(args)
     sys.argv[0] = args.script.name
     sys.argv[1:] = remaining
-    # Replace our dir with script's dir in front of module search path.
-    sys.path[0] = os.path.dirname(args.script.name)
+    # Insert the script's dir in front of module search path.
+    sys.path.insert(0, os.path.dirname(args.script.name))
     setup_fmts()
 
     basicConfig(level=args.level)
@@ -131,8 +131,11 @@ def main(args=None):
     __builtins__ = __main__.__dict__["__builtins__"]
     __main__.__dict__.clear()
     __main__.__dict__.update(
-        __name__="__main__", __file__=args.script.name, __builtins__=__builtins__
-    )
+        __name__='__main__',
+        __file__=args.script.name,
+        __package__=None,
+        __cached__=None,
+        __builtins__=__builtins__)
 
     return exec_(compile(args.script.read(), args.script.name, "exec"))
 
