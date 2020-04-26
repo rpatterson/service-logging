@@ -23,15 +23,50 @@ try:
 except ImportError:
     win32evtlog = None
 
+
+def logging_level_type(level_name):
+    """
+    Lookup the logging level corresponding to the named level.
+    """
+    try:
+        level = getattr(logging, level_name)
+    except Exception as exc:
+        raise argparse.ArgumentTypeError(
+            "Could not look up logging level from name:\n{}".format(exc.args[0])
+        )
+    if not isinstance(level, int):
+        raise argparse.ArgumentTypeError(
+            "Level name {!r} doesn't correspond to a logging level, got {!r}".format(
+                level_name, level
+            )
+        )
+
+    looked_up_level_name = logging.getLevelName(level)
+    if looked_up_level_name != level_name:
+        raise argparse.ArgumentTypeError(
+            (
+                "Looked up logging level {!r} "
+                "doesn't match the given level name {!r}"
+            ).format(level, level_name)
+        )
+
+    return level
+
+
 # Define command line options and arguments
 parser = argparse.ArgumentParser(
     description=__doc__.strip(), formatter_class=argparse.ArgumentDefaultsHelpFormatter,
 )
 parser.add_argument(
-    "--level", default=logging.INFO, help="The level of messages to log at or above"
+    "--level",
+    default=logging.INFO,
+    type=logging_level_type,
+    help="The level of messages to log at or above",
 )
 parser.add_argument(
-    "script", type=open, help="The Python script to run after configuring logging"
+    "script",
+    type=argparse.FileType("r"),
+    help="The Python script to run after configuring logging",
 )
 
 MESSAGE_FMT = '%(name)s %(levelname)s %(message)s'
@@ -64,13 +99,13 @@ SYSLOG_SOCKETS = (
     "/var/run/log",  # BSD
 )
 SYSLOG_SOCKET = None
-for socket_name in SYSLOG_SOCKETS:
+for socket_name in SYSLOG_SOCKETS:  # pragma: no cover
     if os.path.exists(socket_name):
         SYSLOG_SOCKET = socket_name
         break
 
 
-def choose_handler(**kwargs):
+def choose_handler(**kwargs):  # pragma: no cover
     """
     Choose the best handler for the current OS and context.
 
@@ -107,7 +142,7 @@ def basicConfig(level=logging.INFO):
     Also choose the appropriate LEVEL.
     """
     root = logging.getLogger()
-    if not root.handlers:
+    if not root.handlers:  # pragma: no cover
         handler = choose_handler()
         root.addHandler(handler)
         root.setLevel(level)
