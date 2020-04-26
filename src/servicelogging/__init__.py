@@ -23,6 +23,7 @@ try:
 except ImportError:
     win32evtlog = None
 
+# Define command line options and arguments
 parser = argparse.ArgumentParser(
     description=__doc__.strip(), formatter_class=argparse.ArgumentDefaultsHelpFormatter,
 )

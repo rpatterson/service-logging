@@ -17,8 +17,7 @@ setuptools.setup(
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/x-rst",
     url="https://github.com/rpatterson/service-logging",
-    packages=setuptools.find_packages("src"),
-    package_dir={"": "src"},
+    license="MIT",
     classifiers=[
         "Development Status :: 4 - Beta",
         "Environment :: Console",
@@ -33,6 +32,8 @@ setuptools.setup(
     ],
     keywords='logging syslog nteventlog console',
     python_requires=">=3.6",
+    packages=setuptools.find_packages("src"),
+    package_dir={"": "src"},
     use_scm_version=dict(
         write_to="src/servicelogging/version.py",
         local_scheme="no-local-version",
