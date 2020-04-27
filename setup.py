@@ -12,8 +12,9 @@ setuptools.setup(
     author="Ross Patterson",
     author_email="me@rpatterson.net",
     description=(
-        'Python logging configurations done The Right Way '
-        'for programs that may run in the foreground or background'),
+        "Python logging configurations done The Right Way "
+        "for programs that may run in the foreground or background"
+    ),
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/x-rst",
     url="https://github.com/rpatterson/service-logging",
@@ -30,13 +31,12 @@ setuptools.setup(
         "Topic :: System :: Logging",
         "Topic :: Utilities",
     ],
-    keywords='logging syslog nteventlog console',
+    keywords="logging syslog nteventlog console",
     python_requires=">=3.6",
     packages=setuptools.find_packages("src"),
     package_dir={"": "src"},
     use_scm_version=dict(
-        write_to="src/servicelogging/version.py",
-        local_scheme="no-local-version",
+        write_to="src/servicelogging/version.py", local_scheme="no-local-version",
     ),
     setup_requires=["setuptools_scm"],
     install_requires=["six"],
@@ -51,7 +51,5 @@ setuptools.setup(
             "flake8-black",
         ]
     ),
-    entry_points=dict(
-        console_scripts=["service-logging=servicelogging:main"]
-    ),
+    entry_points=dict(console_scripts=["service-logging=servicelogging:main"]),
 )

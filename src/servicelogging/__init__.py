@@ -69,7 +69,7 @@ parser.add_argument(
     help="The Python script to run after configuring logging",
 )
 
-MESSAGE_FMT = '%(name)s %(levelname)s %(message)s'
+MESSAGE_FMT = "%(name)s %(levelname)s %(message)s"
 
 
 def setup_fmts():
@@ -84,8 +84,9 @@ def setup_fmts():
     global SYSLOG_FMT
 
     APPNAME = os.path.splitext(os.path.basename(sys.argv[0]))[0]
-    SYSLOG_PREFIX = '{0}[%(process)d]: '.format(APPNAME)
+    SYSLOG_PREFIX = "{0}[%(process)d]: ".format(APPNAME)
     SYSLOG_FMT = SYSLOG_PREFIX + MESSAGE_FMT
+
 
 setup_fmts()
 
@@ -120,7 +121,8 @@ def choose_handler(**kwargs):  # pragma: no cover
         if win32evtlog is None:
             raise ValueError(
                 "The Python Win32 extensions are not available.  "
-                "Please install the `pywin32` distribution.")
+                "Please install the `pywin32` distribution."
+            )
         kwargs.setdefault("appname", APPNAME)
         handler = handlers.NTEventLogHandler(**kwargs)
         formatter = logging.Formatter(SYSLOG_FMT)
@@ -167,11 +169,12 @@ def main(args=None):
     __builtins__ = __main__.__dict__["__builtins__"]
     __main__.__dict__.clear()
     __main__.__dict__.update(
-        __name__='__main__',
+        __name__="__main__",
         __file__=args.script.name,
         __package__=None,
         __cached__=None,
-        __builtins__=__builtins__)
+        __builtins__=__builtins__,
+    )
 
     return exec_(compile(args.script.read(), args.script.name, "exec"))
 

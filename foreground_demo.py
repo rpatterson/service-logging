@@ -13,7 +13,5 @@ except AttributeError:
 
 logger = logging.getLogger(os.path.splitext(os.path.basename(sys.argv[0]))[0])
 
-for level in sorted(
-        level for level in levels.keys()
-        if isinstance(level, int)):
-    logger.log(level, 'Log %s level message', logging.getLevelName(level))
+for level in sorted(level for level in levels.keys() if isinstance(level, int)):
+    logger.log(level, "Log %s level message", logging.getLevelName(level))

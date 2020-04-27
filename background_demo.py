@@ -9,8 +9,11 @@ import subprocess
 dirname = os.path.dirname(__file__)
 
 popen = subprocess.Popen(
-    [sys.executable,
-     os.path.join(dirname, 'servicelogging.py'),
-     os.path.join(dirname, 'foreground_demo.py')],
-    stderr=subprocess.PIPE)
+    [
+        sys.executable,
+        os.path.join(dirname, "servicelogging.py"),
+        os.path.join(dirname, "foreground_demo.py"),
+    ],
+    stderr=subprocess.PIPE,
+)
 print(popen.communicate()[1])
