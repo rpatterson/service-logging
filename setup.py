@@ -7,6 +7,8 @@ import setuptools
 with open("README.rst", "r") as readme:
     LONG_DESCRIPTION = readme.read()
 
+tests_require = ['contextlib2;python_version<"3"', 'pathlib2;python_version<"3"']
+
 setuptools.setup(
     name="service-logging",
     author="Ross Patterson",
@@ -32,7 +34,7 @@ setuptools.setup(
         "Topic :: Utilities",
     ],
     keywords="logging syslog nteventlog console",
-    python_requires=">=3.6",
+    python_requires=">=2.7",
     packages=setuptools.find_packages("src"),
     package_dir={"": "src"},
     use_scm_version=dict(
@@ -40,15 +42,17 @@ setuptools.setup(
     ),
     setup_requires=["setuptools_scm"],
     install_requires=["six"],
+    tests_require=tests_require,
     extras_require=dict(
-        dev=[
+        dev=tests_require
+        + [
             "pytest",
             "pre-commit",
             "coverage",
             "flake8",
             "autoflake",
             "autopep8",
-            "flake8-black",
+            'flake8-black;python_version>="3"',
         ]
     ),
     entry_points=dict(console_scripts=["service-logging=servicelogging:main"]),

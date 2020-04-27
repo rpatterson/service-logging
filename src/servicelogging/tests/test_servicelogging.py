@@ -2,11 +2,20 @@
 service-logging unit and integration tests.
 """
 
-import contextlib
-import pathlib
 import logging
-import io
 import unittest
+
+# BBB: Python 2 compatibility
+try:
+    import contextlib2 as contextlib
+except ImportError:  # pragma: no cover
+    import contextlib
+try:
+    import pathlib
+except ImportError:  # pragma: no cover
+    import pathlib2 as pathlib
+
+import six
 
 import servicelogging
 
@@ -24,7 +33,7 @@ class ServiceLoggingTests(unittest.TestCase):
         """
         Run the CLI script and return any error messages.
         """
-        stderr_file = io.StringIO()
+        stderr_file = six.StringIO()
         with self.assertRaises(SystemExit):
             with contextlib.redirect_stderr(stderr_file):
                 servicelogging.main(args=args)
@@ -34,7 +43,7 @@ class ServiceLoggingTests(unittest.TestCase):
         """
         The command line script is self-docummenting.
         """
-        stdout_file = io.StringIO()
+        stdout_file = six.StringIO()
         with self.assertRaises(SystemExit):
             with contextlib.redirect_stdout(stdout_file):
                 servicelogging.main(args=["--help"])

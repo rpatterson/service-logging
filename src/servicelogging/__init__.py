@@ -180,7 +180,3 @@ def main(args=None):
 
 
 main.__doc__ = __doc__
-
-
-if __name__ == "__main__":  # pragma: no cover
-    sys.exit(main())
