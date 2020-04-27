@@ -51,7 +51,6 @@ The command-line script also supports wrapping another Python script with loggin
 configured::
 
   $ python -m servicelogging foreground_demo.py
-  $ python servicelogging.py background_demo.py
   $ service-logging foreground_demo.py
 
 See the command-ling help for details on options and arguments::
