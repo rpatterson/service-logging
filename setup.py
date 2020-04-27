@@ -53,6 +53,7 @@ setuptools.setup(
             "autoflake",
             "autopep8",
             'flake8-black;python_version>="3"',
+            "rstcheck",
         ],
         loguru=['loguru;python_version>="3"'],
     ),
