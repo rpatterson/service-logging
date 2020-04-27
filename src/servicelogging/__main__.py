@@ -2,7 +2,7 @@
 Python logging configurations done The Right Way, command-line execution.
 """
 
-import sys
+import sys  # pragma: no cover
 
 from . import main  # pragma: no cover
 

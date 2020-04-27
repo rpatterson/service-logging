@@ -71,7 +71,7 @@ class ServiceLoggingTests(unittest.TestCase):
             args=["--level=DEBUG", "__non_existent_file__"]
         )
         self.assertIn(
-            "No such file or directory: '__non_existent_file__'",
+            "Could not resolve '__non_existent_file__'",
             stderr,
             "Wrong invalid script argument message",
         )

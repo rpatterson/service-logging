@@ -11,7 +11,8 @@ dirname = os.path.dirname(__file__)
 popen = subprocess.Popen(
     [
         sys.executable,
-        os.path.join(dirname, "servicelogging.py"),
+        "-m",
+        "servicelogging",
         os.path.join(dirname, "foreground_demo.py"),
     ],
     stderr=subprocess.PIPE,

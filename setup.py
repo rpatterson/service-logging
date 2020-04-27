@@ -7,7 +7,7 @@ import setuptools
 with open("README.rst", "r") as readme:
     LONG_DESCRIPTION = readme.read()
 
-tests_require = ['contextlib2;python_version<"3"', 'pathlib2;python_version<"3"']
+tests_require = ["six", 'contextlib2;python_version<"3"', 'pathlib2;python_version<"3"']
 
 setuptools.setup(
     name="service-logging",
@@ -41,7 +41,7 @@ setuptools.setup(
         write_to="src/servicelogging/version.py", local_scheme="no-local-version",
     ),
     setup_requires=["setuptools_scm"],
-    install_requires=["six"],
+    install_requires=["main-wrapper"],
     tests_require=tests_require,
     extras_require=dict(
         dev=tests_require

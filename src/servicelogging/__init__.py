@@ -8,7 +8,7 @@ import logging
 from logging import handlers
 import argparse
 
-import six
+import mainwrapper
 
 # Manage version through the VCS CI/CD process
 try:
@@ -68,11 +68,6 @@ parser.add_argument(
     type=logging_level_type,
     help="The level of messages to log at or above",
 )
-parser.add_argument(
-    "script",
-    type=argparse.FileType("r"),
-    help="The Python script to run after configuring logging",
-)
 
 MESSAGE_FMT = "%(name)s %(levelname)s %(message)s"
 message_formatter = logging.Formatter(MESSAGE_FMT)
@@ -119,11 +114,10 @@ class SysLogHandler(handlers.SysLogHandler):
     Also map common custom logging levels, such as VERBOSE.
     """
 
-    priority_map = dict(handlers.SysLogHandler.priority_map, **{
-        "TRACE": "debug",
-        "VERBOSE": "debug",
-        "SUCCESS": "notice",
-    })
+    priority_map = dict(
+        handlers.SysLogHandler.priority_map,
+        **{"TRACE": "debug", "VERBOSE": "debug", "SUCCESS": "notice"}
+    )
 
 
 def choose_handler(**kwargs):  # pragma: no cover
@@ -184,33 +178,13 @@ if loguru is not None:  # pragma: no cover
                     logging.addLevelName(loguru_level.no, level_name)
 
 
-def main(args=None):
+@mainwrapper.wrap_main(parser)
+def main(level=parser.get_default("level")):
     """
     Run the Python script provided with logging configured.
     """
-    import __main__
-
-    args, remaining = parser.parse_known_args(args)
-    sys.argv[0] = args.script.name
-    sys.argv[1:] = remaining
-    # Insert the script's dir in front of module search path.
-    sys.path.insert(0, os.path.dirname(args.script.name))
     setup_fmts()
-
-    basicConfig(level=args.level)
-
-    exec_ = six.exec_
-    __builtins__ = __main__.__dict__["__builtins__"]
-    __main__.__dict__.clear()
-    __main__.__dict__.update(
-        __name__="__main__",
-        __file__=args.script.name,
-        __package__=None,
-        __cached__=None,
-        __builtins__=__builtins__,
-    )
-
-    return exec_(compile(args.script.read(), args.script.name, "exec"))
+    basicConfig(level=level)
 
 
 main.__doc__ = __doc__
