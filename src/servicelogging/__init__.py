@@ -1,5 +1,5 @@
 """
-python logging configurations done The Right Way, top-level package.
+Python logging configurations done The Right Way.
 """
 
 import sys
